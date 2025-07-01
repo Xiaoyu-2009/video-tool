@@ -162,13 +162,12 @@
 
         <div class="api-selector">
             <select id="api-select">
-                <option value="https://jx.xmflv.com/?url=">线路1 - B站番剧专用（最新）</option>
-                <option value="https://jx.quankan.app/?url=">线路2 - B站新接口</option>
-                <option value="https://jx.xyflv.cc/?url=">线路3 - B站备用线路</option>
-                <option value="https://okjx.cc/?url=">线路4 - 通用VIP解析</option>
-                <option value="https://vip.bljiex.com/?v=">线路5 - B站专用</option>
-                <option value="https://www.pangujiexi.com/jiexi/?url=">线路6 - 备用解析</option>
-                <option value="https://jx.yparse.com/index.php?url=">线路7 - 稳定线路</option>
+                <option value="https://jx.m3u8.tv/jiexi/?url=">线路1 - VIP解析（推荐）</option>
+                <option value="https://jx.xyflv.cc/?url=">线路2 - 勉强能看</option>
+                <option value="https://jx.bozrc.com:4433/player/?url=">线路3 - 勉强能看</option>
+                <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
+                <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
+                <option value="https://vip.bljiex.com/?v=">线路6 - B站专用</option>
             </select>
         </div>
 
@@ -213,27 +212,11 @@
             
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             const matches = videoUrl.match(urlRegex);
-            
-            if (matches && matches.length > 0) {
-                videoUrl = matches[0];
 
-                if (videoUrl.includes('bilibili.com/bangumi')) {
-                    // B站番剧特殊处理
-                    const currentApiIndex = document.getElementById('api-select').selectedIndex;
-                    if (currentApiIndex > 2 && currentApiIndex !== 4) {
-                        // 自动切换到B站番剧专用线路
-                        document.getElementById('api-select').selectedIndex = 0;
-                        apiUrl = document.getElementById('api-select').value;
-                        alert('检测到B站番剧链接，已自动切换到B站番剧专用解析线路');
-                    }
-                } else if (!videoUrl.includes('bilibili.com')) {
-                    if (videoUrl.includes('?')) {
-                        videoUrl = videoUrl.split('?')[0] + '?';
-                    }
-                }
-            } else {
-                alert('未找到有效的视频链接');
-                return;
+            if (videoUrl.includes('bilibili.com')) {
+                document.getElementById('api-select').selectedIndex = 5;
+                apiUrl = document.getElementById('api-select').value;
+                alert('检测到B站链接，已自动切换到B站专用解析线路');
             }
 
             const supportedSites = [
