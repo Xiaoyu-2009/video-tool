@@ -221,20 +221,23 @@
 
         // 分享网站功能
         function shareWebsite() {
-            if (navigator.share) {
-                navigator.share({
-                    title: '腾讯视频-测试工具',
-                    text: '一个好用的腾讯视频解析工具，手机电脑都能用！',
-                    url: window.location.href
-                });
-            } else {
-                const dummy = document.createElement('input');
-                document.body.appendChild(dummy);
+            try {
+                const dummy = document.createElement('textarea');
+                dummy.style.position = 'fixed';
+                dummy.style.left = '0';
+                dummy.style.top = '0';
+                dummy.style.opacity = '0';
                 dummy.value = window.location.href;
+                document.body.appendChild(dummy);
+                dummy.focus();
                 dummy.select();
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
-                alert('网址已复制到剪贴板，您可以分享给朋友');
+                setTimeout(function() {
+                    alert('网址已复制到剪贴板，您可以分享给朋友');
+                }, 100);
+            } catch (e) {
+                alert('分享失败，请手动复制网址');
             }
         }
 
