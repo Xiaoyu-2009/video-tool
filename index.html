@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <title>全网视频-解析工具</title>
+    <title>腾讯视频-测试工具</title>
     <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
@@ -158,7 +158,7 @@
 
 <body>
     <div class="container">
-        <h1>全网视频-解析工具</h1>
+        <h1>腾讯视频-测试工具</h1>
 
         <div class="api-selector">
             <select id="api-select">
@@ -167,13 +167,12 @@
                 <option value="https://jx.bozrc.com:4433/player/?url=">线路3 - 勉强能看</option>
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
-                <option value="https://vip.bljiex.com/?v=">线路6 - B站专用</option>
             </select>
         </div>
 
         <div class="input-group">
             <input type="text" id="video-url"
-                placeholder="请输入视频链接，支持腾讯、爱奇艺、优酷、芒果等">
+                placeholder="请输入腾讯视频链接，例如：https://v.qq.com/x/cover/mzc00200aaogpgh/i4101my0azm.html">
             <button onclick="parseVideo()">解析播放</button>
         </div>
 
@@ -188,65 +187,31 @@
 
         <div class="instructions">
             <h3>使用说明</h3>
-            <p>1. 复制视频网页链接，支持以下平台:</p>
-            <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
-                <li>腾讯视频 (v.qq.com)</li>
-                <li>爱奇艺 (iqiyi.com)</li>
-                <li>哔哩哔哩 (bilibili.com)......</li>
-            </ul>
+            <p>1. 复制腾讯视频网页链接，格式通常为：https://v.qq.com/x/cover/xxx/xxx.html</p>
             <p>2. 如果当前线路无法播放，请尝试切换其他线路</p>
             <p>3. 开发作者为Xiaoyu_2009（小宇不是鱼）</p>
             <p>4. 本工具仅供学习交流使用，请勿用于商业用途</p>
+            <p>5. 在手机和电脑上均可使用此工具</p>
         </div>
     </div>
 
     <script>
         function parseVideo() {
-            let videoUrl = document.getElementById('video-url').value.trim();
-            let apiUrl = document.getElementById('api-select').value;
+            const videoUrl = document.getElementById('video-url').value.trim();
+            const apiUrl = document.getElementById('api-select').value;
 
             if (!videoUrl) {
-                alert('请输入视频链接');
+                alert('请输入腾讯视频链接');
                 return;
             }
-            
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-            const matches = videoUrl.match(urlRegex);
 
-            if (videoUrl.includes('bilibili.com')) {
-                document.getElementById('api-select').selectedIndex = 5;
-                apiUrl = document.getElementById('api-select').value;
-                alert('检测到B站链接，已自动切换到B站专用解析线路');
-            }
-
-            const supportedSites = [
-                'v.qq.com',
-                'iqiyi.com',
-                'youku.com',
-                'mgtv.com',
-                'tv.sohu.com',
-                'bilibili.com',
-                '1905.com',
-                'pptv.com'
-            ];
-            
-            let isSupported = false;
-            for (const site of supportedSites) {
-                if (videoUrl.includes(site)) {
-                    isSupported = true;
-                    break;
-                }
-            }
-            
-            if (!isSupported) {
-                alert('请输入支持的视频链接，包括腾讯、爱奇艺、哔哩哔哩等主流视频网站');
+            if (!videoUrl.includes('v.qq.com')) {
+                alert('请输入正确的腾讯视频链接');
                 return;
             }
 
             const player = document.getElementById('video-player');
             player.src = apiUrl + encodeURIComponent(videoUrl);
-
-            document.getElementById('video-url').value = videoUrl;
             
             localStorage.setItem('lastVideoUrl', videoUrl);
             localStorage.setItem('lastApiUrl', apiUrl);
@@ -295,24 +260,11 @@
             if (navigator.clipboard && navigator.clipboard.readText) {
                 navigator.clipboard.readText()
                     .then(text => {
-                        if (text && !urlInput.value) {
-                            const supportedSites = ['v.qq.com', 'iqiyi.com', 'bilibili.com', 'youku.com', 'mgtv.com'];
-                            for (const site of supportedSites) {
-                                if (text.includes(site)) {
-                                    urlInput.value = text;
-                                    break;
-                                }
-                            }
+                        if (text && text.includes('v.qq.com') && !urlInput.value) {
+                            urlInput.value = text;
                         }
                     })
                 .catch(err => {});
-            }
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlParam = urlParams.get('url');
-            if (urlParam) {
-                urlInput.value = decodeURIComponent(urlParam);
-                parseVideo();
             }
         });
     </script>
