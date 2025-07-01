@@ -191,12 +191,7 @@
             <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
                 <li>腾讯视频 (v.qq.com)</li>
                 <li>爱奇艺 (iqiyi.com)</li>
-                <li>优酷 (youku.com)</li>
-                <li>芒果TV (mgtv.com)</li>
-                <li>搜狐视频 (tv.sohu.com)</li>
-                <li>哔哩哔哩 (bilibili.com)</li>
-                <li>1905电影网 (1905.com)</li>
-                <li>PPTV (pptv.com)</li>
+                <li>哔哩哔哩 (bilibili.com)......</li>
             </ul>
             <p>2. 如果当前线路无法播放，请尝试切换其他线路</p>
             <p>3. 开发作者为Xiaoyu_2009（小宇不是鱼）</p>
@@ -207,11 +202,26 @@
 
     <script>
         function parseVideo() {
-            const videoUrl = document.getElementById('video-url').value.trim();
+            let videoUrl = document.getElementById('video-url').value.trim();
             const apiUrl = document.getElementById('api-select').value;
 
             if (!videoUrl) {
                 alert('请输入视频链接');
+                return;
+            }
+            
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            const matches = videoUrl.match(urlRegex);
+            
+            if (matches && matches.length > 0) {
+                videoUrl = matches[0];
+                if (!videoUrl.includes('bilibili.com')) {
+                    if (videoUrl.includes('?')) {
+                        videoUrl = videoUrl.split('?')[0] + '?';
+                    }
+                }
+            } else {
+                alert('未找到有效的视频链接');
                 return;
             }
 
@@ -236,12 +246,14 @@
             }
             
             if (!isSupported) {
-                alert('请输入支持的视频链接，包括腾讯、爱奇艺、优酷等主流视频网站');
+                alert('请输入支持的视频链接，包括腾讯、爱奇艺、哔哩哔哩等主流视频网站');
                 return;
             }
 
             const player = document.getElementById('video-player');
             player.src = apiUrl + encodeURIComponent(videoUrl);
+
+            document.getElementById('video-url').value = videoUrl;
             
             localStorage.setItem('lastVideoUrl', videoUrl);
             localStorage.setItem('lastApiUrl', apiUrl);
