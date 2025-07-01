@@ -162,24 +162,24 @@
 
         <div class="api-selector">
             <select id="api-select">
-                <option value="https://jx.jsonplayer.com/player/?url=">线路1 - B站番剧专用（推荐）</option>
-                <option value="https://jx.iztyy.com/svip/?url=">线路2 - B站备用线路</option>
-                <option value="https://jx.aidouer.net/?url=">线路3 - 通用解析</option>
-                <option value="https://jx.m3u8.tv/jiexi/?url=">线路4 - VIP解析</option>
-                <option value="https://jx.bozrc.com:4433/player/?url=">线路5 - 备用线路</option>
-                <option value="https://jx.playerjy.com/?url=">线路6 - 备用线路</option>
-                <option value="https://www.yemu.xyz/?url=">线路7 - 备用线路</option>
+                <option value="https://jx.xmflv.com/?url=">线路1 - B站番剧专用（最新）</option>
+                <option value="https://jx.quankan.app/?url=">线路2 - B站新接口</option>
+                <option value="https://jx.xyflv.cc/?url=">线路3 - B站备用线路</option>
+                <option value="https://okjx.cc/?url=">线路4 - 通用VIP解析</option>
+                <option value="https://vip.bljiex.com/?v=">线路5 - B站专用</option>
+                <option value="https://www.pangujiexi.com/jiexi/?url=">线路6 - 备用解析</option>
+                <option value="https://jx.yparse.com/index.php?url=">线路7 - 稳定线路</option>
             </select>
         </div>
 
         <div class="input-group">
-            <input type="text" id="video-url" placeholder="请输入视频链接，支持腾讯、爱奇艺、优酷、芒果等">
+            <input type="text" id="video-url"
+                placeholder="请输入视频链接，支持腾讯、爱奇艺、优酷、芒果等">
             <button onclick="parseVideo()">解析播放</button>
         </div>
 
         <div class="player-container">
-            <iframe id="video-player" src="" frameborder="0" allowfullscreen
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+            <iframe id="video-player" src="" frameborder="0" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
 
         <div class="share-section">
@@ -210,19 +210,21 @@
                 alert('请输入视频链接');
                 return;
             }
-
+            
             const urlRegex = /(https?:\/\/[^\s]+)/g;
             const matches = videoUrl.match(urlRegex);
-
+            
             if (matches && matches.length > 0) {
                 videoUrl = matches[0];
 
                 if (videoUrl.includes('bilibili.com/bangumi')) {
+                    // B站番剧特殊处理
                     const currentApiIndex = document.getElementById('api-select').selectedIndex;
-                    if (currentApiIndex > 1) {
+                    if (currentApiIndex > 2 && currentApiIndex !== 4) {
+                        // 自动切换到B站番剧专用线路
                         document.getElementById('api-select').selectedIndex = 0;
                         apiUrl = document.getElementById('api-select').value;
-                        alert('检测到B站番剧链接，已自动切换到B站专用解析线路');
+                        alert('检测到B站番剧链接，已自动切换到B站番剧专用解析线路');
                     }
                 } else if (!videoUrl.includes('bilibili.com')) {
                     if (videoUrl.includes('?')) {
@@ -244,7 +246,7 @@
                 '1905.com',
                 'pptv.com'
             ];
-
+            
             let isSupported = false;
             for (const site of supportedSites) {
                 if (videoUrl.includes(site)) {
@@ -252,7 +254,7 @@
                     break;
                 }
             }
-
+            
             if (!isSupported) {
                 alert('请输入支持的视频链接，包括腾讯、爱奇艺、哔哩哔哩等主流视频网站');
                 return;
@@ -262,7 +264,7 @@
             player.src = apiUrl + encodeURIComponent(videoUrl);
 
             document.getElementById('video-url').value = videoUrl;
-
+            
             localStorage.setItem('lastVideoUrl', videoUrl);
             localStorage.setItem('lastApiUrl', apiUrl);
         }
@@ -280,7 +282,7 @@
                 dummy.select();
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
-                setTimeout(function () {
+                setTimeout(function() {
                     alert('网址已复制到剪贴板，您可以分享给一条鱼或者发给朋友！');
                 }, 100);
             } catch (e) {
@@ -293,11 +295,11 @@
             const apiSelect = document.getElementById('api-select');
             const lastVideoUrl = localStorage.getItem('lastVideoUrl');
             const lastApiUrl = localStorage.getItem('lastApiUrl');
-
+            
             if (lastVideoUrl) {
                 urlInput.value = lastVideoUrl;
             }
-
+            
             if (lastApiUrl) {
                 for (let i = 0; i < apiSelect.options.length; i++) {
                     if (apiSelect.options[i].value === lastApiUrl) {
@@ -320,7 +322,7 @@
                             }
                         }
                     })
-                    .catch(err => { });
+                .catch(err => {});
             }
 
             const urlParams = new URLSearchParams(window.location.search);
@@ -333,4 +335,4 @@
     </script>
 </body>
 
-</html>
+</html> 
