@@ -167,9 +167,7 @@
                 <option value="https://jx.bozrc.com:4433/player/?url=">线路3 - 勉强能看</option>
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
-                <option value="https://vip.bljiex.com/?v=">线路6 - B站专用</option>
-                <option value="https://jx.aidouer.net/?url=">线路7 - B站备用接口</option>
-                <option value="https://jiexi.t7g.cn/?url=">线路8 - B站新接口</option>
+                <option value="https://jx.aidouer.net/?url=">线路6 - B站专用</option>
             </select>
         </div>
 
@@ -220,7 +218,7 @@
             }
             
             if (extractedUrl.includes('bilibili.com')) {
-                if (document.getElementById('api-select').selectedIndex < 5 || document.getElementById('api-select').selectedIndex > 7) {
+                if (document.getElementById('api-select').selectedIndex !== 5) {
                     document.getElementById('api-select').selectedIndex = 5;
                     apiUrl = document.getElementById('api-select').value;
                     alert('检测到B站链接，已自动切换到B站专用解析线路');
@@ -253,10 +251,8 @@
 
             const player = document.getElementById('video-player');
             player.src = apiUrl + encodeURIComponent(videoUrl);
-
-            document.getElementById('video-url').value = videoUrl;
             
-            localStorage.setItem('lastVideoUrl', videoUrl);
+            localStorage.setItem('lastVideoUrl', document.getElementById('video-url').value.trim());
             localStorage.setItem('lastApiUrl', apiUrl);
         }
 
@@ -326,7 +322,7 @@
                 const extractedParamUrl = urlParamMatch && urlParamMatch[0] ? urlParamMatch[0] : decodedUrl;
 
                 const currentIndex = document.getElementById('api-select').selectedIndex;
-                const isBiliSelected = currentIndex >= 5 && currentIndex <= 7;
+                const isBiliSelected = currentIndex === 5;
                 
                 if (!(extractedParamUrl.includes('bilibili.com') && isBiliSelected)) {
                     parseVideo();
