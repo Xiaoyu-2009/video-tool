@@ -167,7 +167,7 @@
                 <option value="https://jx.bozrc.com:4433/player/?url=">线路3 - 勉强能看</option>
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
-                <option value="https://jx.xmflv.com/?url=">线路6 - B站专用</option>
+                <option value="https://vip.bljiex.com/?v=">线路6 - B站专用</option>
             </select>
         </div>
 
@@ -209,11 +209,15 @@
                 alert('请输入视频链接');
                 return;
             }
-            
-            const urlRegex = /(https?:\/\/[^\s]+)/g;
-            const matches = videoUrl.match(urlRegex);
 
-            if (videoUrl.includes('bilibili.com') && document.getElementById('api-select').selectedIndex !== 5) {
+            let extractedUrl = videoUrl;
+            const urlMatch = videoUrl.match(/(https?:\/\/[^\s]+)/);
+            if (urlMatch && urlMatch[0]) {
+                extractedUrl = urlMatch[0];
+                videoUrl = extractedUrl;
+            }
+            
+            if (extractedUrl.includes('bilibili.com') && document.getElementById('api-select').selectedIndex !== 5) {
                 document.getElementById('api-select').selectedIndex = 5;
                 apiUrl = document.getElementById('api-select').value;
                 alert('检测到B站链接，已自动切换到B站专用解析线路');
@@ -314,7 +318,10 @@
                 const decodedUrl = decodeURIComponent(urlParam);
                 urlInput.value = decodedUrl;
 
-                if (!(decodedUrl.includes('bilibili.com') && document.getElementById('api-select').selectedIndex === 5)) {
+                const urlParamMatch = decodedUrl.match(/(https?:\/\/[^\s]+)/);
+                const extractedParamUrl = urlParamMatch && urlParamMatch[0] ? urlParamMatch[0] : decodedUrl;
+
+                if (!(extractedParamUrl.includes('bilibili.com') && document.getElementById('api-select').selectedIndex === 5)) {
                     parseVideo();
                 }
             }
