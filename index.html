@@ -167,6 +167,9 @@
                 <option value="https://jx.bozrc.com:4433/player/?url=">线路3 - 勉强能看</option>
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
+                <option value="https://api.jiexi.la/?url=">B站专用线路</option>
+                <option value="https://jx.jsonplayer.com/player/?url=">通用线路A</option>
+                <option value="https://jx.parwix.com:4433/player/?url=">通用线路B</option>
             </select>
         </div>
 
@@ -203,7 +206,8 @@
     <script>
         function parseVideo() {
             let videoUrl = document.getElementById('video-url').value.trim();
-            const apiUrl = document.getElementById('api-select').value;
+            const apiSelect = document.getElementById('api-select');
+            let apiUrl = apiSelect.value;
 
             if (!videoUrl) {
                 alert('请输入视频链接');
@@ -238,9 +242,11 @@
             ];
             
             let isSupported = false;
+            let siteType = '';
             for (const site of supportedSites) {
                 if (videoUrl.includes(site)) {
                     isSupported = true;
+                    siteType = site;
                     break;
                 }
             }
@@ -250,13 +256,27 @@
                 return;
             }
 
+            if (siteType === 'bilibili.com') {
+                for (let i = 0; i < apiSelect.options.length; i++) {
+                    if (apiSelect.options[i].text.includes('B站专用')) {
+                        apiSelect.selectedIndex = i;
+                        apiUrl = apiSelect.options[i].value;
+                        break;
+                    }
+                }
+            }
+
             const player = document.getElementById('video-player');
             player.src = apiUrl + encodeURIComponent(videoUrl);
-
+            
             document.getElementById('video-url').value = videoUrl;
             
             localStorage.setItem('lastVideoUrl', videoUrl);
             localStorage.setItem('lastApiUrl', apiUrl);
+
+            player.onerror = function() {
+                alert('视频加载失败，请尝试切换其他线路');
+            };
         }
 
         function shareWebsite() {
