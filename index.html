@@ -219,7 +219,6 @@
             localStorage.setItem('lastApiUrl', apiUrl);
         }
 
-        // 分享网站功能
         function shareWebsite() {
             try {
                 const dummy = document.createElement('textarea');
@@ -234,19 +233,16 @@
                 document.execCommand('copy');
                 document.body.removeChild(dummy);
                 setTimeout(function() {
-                    alert('网址已复制到剪贴板，您可以分享给朋友');
+                    alert('网址已复制到剪贴板，您可以分享给一条鱼或者发给朋友！');
                 }, 100);
             } catch (e) {
                 alert('分享失败，请手动复制网址');
             }
         }
 
-        // 自动从剪贴板获取链接
         document.addEventListener('DOMContentLoaded', function () {
             const urlInput = document.getElementById('video-url');
             const apiSelect = document.getElementById('api-select');
-            
-            // 从本地存储恢复上次的设置
             const lastVideoUrl = localStorage.getItem('lastVideoUrl');
             const lastApiUrl = localStorage.getItem('lastApiUrl');
             
@@ -263,7 +259,6 @@
                 }
             }
 
-            // 检测是否支持navigator.clipboard API
             if (navigator.clipboard && navigator.clipboard.readText) {
                 navigator.clipboard.readText()
                     .then(text => {
@@ -271,7 +266,7 @@
                             urlInput.value = text;
                         }
                     })
-                    .catch(err => {});
+                .catch(err => {});
             }
         });
     </script>
