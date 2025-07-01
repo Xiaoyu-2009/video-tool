@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <title>腾讯视频-测试工具</title>
+    <title>全网视频-解析工具</title>
     <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
@@ -158,7 +158,7 @@
 
 <body>
     <div class="container">
-        <h1>腾讯视频-测试工具</h1>
+        <h1>全网视频-解析工具</h1>
 
         <div class="api-selector">
             <select id="api-select">
@@ -172,7 +172,7 @@
 
         <div class="input-group">
             <input type="text" id="video-url"
-                placeholder="请输入腾讯视频链接，例如：https://v.qq.com/x/cover/mzc00200aaogpgh/i4101my0azm.html">
+                placeholder="请输入视频链接，支持腾讯、爱奇艺、优酷、芒果等">
             <button onclick="parseVideo()">解析播放</button>
         </div>
 
@@ -187,7 +187,17 @@
 
         <div class="instructions">
             <h3>使用说明</h3>
-            <p>1. 复制腾讯视频网页链接，格式通常为：https://v.qq.com/x/cover/xxx/xxx.html</p>
+            <p>1. 复制视频网页链接，支持以下平台:</p>
+            <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
+                <li>腾讯视频 (v.qq.com)</li>
+                <li>爱奇艺 (iqiyi.com)</li>
+                <li>优酷 (youku.com)</li>
+                <li>芒果TV (mgtv.com)</li>
+                <li>搜狐视频 (tv.sohu.com)</li>
+                <li>哔哩哔哩 (bilibili.com)</li>
+                <li>1905电影网 (1905.com)</li>
+                <li>PPTV (pptv.com)</li>
+            </ul>
             <p>2. 如果当前线路无法播放，请尝试切换其他线路</p>
             <p>3. 开发作者为Xiaoyu_2009（小宇不是鱼）</p>
             <p>4. 本工具仅供学习交流使用，请勿用于商业用途</p>
@@ -201,12 +211,32 @@
             const apiUrl = document.getElementById('api-select').value;
 
             if (!videoUrl) {
-                alert('请输入腾讯视频链接');
+                alert('请输入视频链接');
                 return;
             }
 
-            if (!videoUrl.includes('v.qq.com')) {
-                alert('请输入正确的腾讯视频链接');
+            // 检查是否是支持的视频网站
+            const supportedSites = [
+                'v.qq.com',
+                'iqiyi.com',
+                'youku.com',
+                'mgtv.com',
+                'tv.sohu.com',
+                'bilibili.com',
+                '1905.com',
+                'pptv.com'
+            ];
+            
+            let isSupported = false;
+            for (const site of supportedSites) {
+                if (videoUrl.includes(site)) {
+                    isSupported = true;
+                    break;
+                }
+            }
+            
+            if (!isSupported) {
+                alert('请输入支持的视频链接，包括腾讯、爱奇艺、优酷等主流视频网站');
                 return;
             }
 
