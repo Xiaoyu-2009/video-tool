@@ -168,8 +168,8 @@
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
                 <option value="https://jx.aidouer.net/?url=">线路6 - B站专用</option>
-                <option value="https://www.cuan.la/m3u8.php?url=">线路7 - B站(带弹幕A)</option>
-                <option value="https://vip.parwix.com:4433/player/analysis.php?v=">线路8 - B站(带弹幕B)</option>
+                <option value="https://api.jiexi.la/?url=">线路7 - B站(尝试带弹幕)</option>
+                <option value="https://jx.jsonplayer.com/player/?url=">线路8 - B站备用线路</option>
             </select>
         </div>
 
@@ -223,14 +223,7 @@
             
             if (extractedUrl.includes('bilibili.com')) {
                 if (document.getElementById('api-select').selectedIndex < 5) {
-                    const useDanmu = confirm('检测到B站链接，是否需要显示弹幕？\n【确定】显示弹幕\n【取消】不显示弹幕');
-                    
-                    if (useDanmu) {
-                        document.getElementById('api-select').selectedIndex = Math.random() < 0.5 ? 6 : 7;
-                    } else {
-                        document.getElementById('api-select').selectedIndex = 5;
-                    }
-                    
+                    document.getElementById('api-select').selectedIndex = 5;
                     apiUrl = document.getElementById('api-select').value;
                 }
             }
