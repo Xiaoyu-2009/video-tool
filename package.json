@@ -1,0 +1,16 @@
+{
+  "name": "tencent-video-tool",
+  "version": "1.0.0",
+  "description": "腾讯视频解析工具",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "vercel-build": "echo 'Build completed'"
+  },
+  "engines": {
+    "node": "14.x"
+  },
+  "keywords": ["video", "tencent", "解析"],
+  "author": "Xiaoyu_2009",
+  "license": "MIT"
+} 
