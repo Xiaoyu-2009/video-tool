@@ -168,8 +168,6 @@
                 <option value="https://jx.playerjy.com/?url=">线路4 - 勉强能看</option>
                 <option value="https://www.yemu.xyz/?url=">线路5 - 勉强能看</option>
                 <option value="https://jx.aidouer.net/?url=">线路6 - B站专用</option>
-                <option value="https://api.jiexi.la/?url=">线路7 - B站(尝试带弹幕)</option>
-                <option value="https://jx.jsonplayer.com/player/?url=">线路8 - B站备用线路</option>
             </select>
         </div>
 
@@ -194,9 +192,7 @@
             <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
                 <li>腾讯视频 (v.qq.com)</li>
                 <li>爱奇艺 (iqiyi.com)</li>
-                <li>哔哩哔哩 (bilibili.com)</li>
-                <li>抖音 (douyin.com)</li>
-                <li>快手 (kuaishou.com)等...</li>
+                <li>哔哩哔哩 (bilibili.com)......</li>
             </ul>
             <p>2. 如果当前线路无法播放，请尝试切换其他线路</p>
             <p>3. 开发作者为Xiaoyu_2009（小宇不是鱼）</p>
@@ -222,9 +218,10 @@
             }
             
             if (extractedUrl.includes('bilibili.com')) {
-                if (document.getElementById('api-select').selectedIndex < 5) {
+                if (document.getElementById('api-select').selectedIndex !== 5) {
                     document.getElementById('api-select').selectedIndex = 5;
                     apiUrl = document.getElementById('api-select').value;
+                    alert('检测到B站链接，已自动切换到B站专用解析线路');
                 }
             }
 
@@ -236,11 +233,7 @@
                 'tv.sohu.com',
                 'bilibili.com',
                 '1905.com',
-                'pptv.com',
-                'douyin.com',
-                'kuaishou.com',
-                'ixigua.com',
-                'haokan.baidu.com'
+                'pptv.com'
             ];
             
             let isSupported = false;
@@ -258,7 +251,7 @@
 
             const player = document.getElementById('video-player');
             player.src = apiUrl + encodeURIComponent(videoUrl);
-
+            
             localStorage.setItem('lastVideoUrl', document.getElementById('video-url').value.trim());
             localStorage.setItem('lastApiUrl', apiUrl);
         }
@@ -329,7 +322,7 @@
                 const extractedParamUrl = urlParamMatch && urlParamMatch[0] ? urlParamMatch[0] : decodedUrl;
 
                 const currentIndex = document.getElementById('api-select').selectedIndex;
-                const isBiliSelected = currentIndex >= 5 && currentIndex <= 7;
+                const isBiliSelected = currentIndex === 5;
                 
                 if (!(extractedParamUrl.includes('bilibili.com') && isBiliSelected)) {
                     parseVideo();
