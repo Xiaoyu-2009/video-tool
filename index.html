@@ -212,74 +212,30 @@
                 return;
             }
 
-            try {
-                const player = document.getElementById('video-player');
-                const finalUrl = apiUrl + encodeURIComponent(videoUrl);
-                player.src = finalUrl;
-                
-                // 保存到本地存储，方便下次使用
-                localStorage.setItem('lastVideoUrl', videoUrl);
-                localStorage.setItem('lastApiUrl', apiUrl);
-                
-                // 创建历史记录以便使用返回键
-                const state = { url: finalUrl };
-                history.pushState(state, document.title, window.location.href);
-                
-                console.log('解析成功，播放地址：' + finalUrl);
-            } catch (error) {
-                console.error('解析视频时出错:', error);
-                alert('解析视频时出错，请尝试其他线路');
-            }
+            const player = document.getElementById('video-player');
+            player.src = apiUrl + encodeURIComponent(videoUrl);
+            
+            localStorage.setItem('lastVideoUrl', videoUrl);
+            localStorage.setItem('lastApiUrl', apiUrl);
         }
 
         // 分享网站功能
         function shareWebsite() {
-            const shareTitle = '腾讯视频-测试工具';
-            const shareText = '一个好用的腾讯视频解析工具，手机电脑都能用！';
-            const shareUrl = window.location.href;
-            
             if (navigator.share) {
                 navigator.share({
-                    title: shareTitle,
-                    text: shareText,
-                    url: shareUrl
-                })
-                .then(() => console.log('分享成功'))
-                .catch((error) => {
-                    console.log('分享失败:', error);
-                    fallbackShare(shareUrl);
+                    title: '腾讯视频-测试工具',
+                    text: '一个好用的腾讯视频解析工具，手机电脑都能用！',
+                    url: window.location.href
                 });
             } else {
-                fallbackShare(shareUrl);
+                const dummy = document.createElement('input');
+                document.body.appendChild(dummy);
+                dummy.value = window.location.href;
+                dummy.select();
+                document.execCommand('copy');
+                document.body.removeChild(dummy);
+                alert('网址已复制到剪贴板，您可以分享给朋友');
             }
-        }
-        
-        function fallbackShare(url) {
-            // 复制当前网址到剪贴板
-            try {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(url)
-                        .then(() => alert('网址已复制到剪贴板，您可以分享给朋友'))
-                        .catch(err => {
-                            console.error('无法复制到剪贴板:', err);
-                            legacyCopy(url);
-                        });
-                } else {
-                    legacyCopy(url);
-                }
-            } catch (e) {
-                legacyCopy(url);
-            }
-        }
-        
-        function legacyCopy(text) {
-            const dummy = document.createElement('input');
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-            alert('网址已复制到剪贴板，您可以分享给朋友');
         }
 
         // 自动从剪贴板获取链接
@@ -303,13 +259,6 @@
                     }
                 }
             }
-            
-            // 尝试获取焦点（在移动设备上可能会被阻止）
-            try {
-                urlInput.focus();
-            } catch (e) {
-                console.log('无法自动获取焦点');
-            }
 
             // 检测是否支持navigator.clipboard API
             if (navigator.clipboard && navigator.clipboard.readText) {
@@ -319,33 +268,7 @@
                             urlInput.value = text;
                         }
                     })
-                    .catch(err => {
-                        console.log('无法读取剪贴板内容: ', err);
-                    });
-            }
-            
-            // 支持从URL参数加载视频
-            const urlParams = new URLSearchParams(window.location.search);
-            const videoParam = urlParams.get('v');
-            if (videoParam) {
-                try {
-                    const decodedUrl = decodeURIComponent(videoParam);
-                    if (decodedUrl.includes('v.qq.com')) {
-                        urlInput.value = decodedUrl;
-                        parseVideo(); // 自动解析
-                    }
-                } catch (e) {
-                    console.error('URL参数解析失败', e);
-                }
-            }
-        });
-        
-        // 处理返回按钮
-        window.addEventListener('popstate', function(event) {
-            if (event.state && event.state.url) {
-                document.getElementById('video-player').src = event.state.url;
-            } else {
-                document.getElementById('video-player').src = '';
+                    .catch(err => {});
             }
         });
     </script>
