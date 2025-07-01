@@ -173,7 +173,7 @@
 
         <div class="input-group">
             <input type="text" id="video-url"
-                placeholder="请输入视频链接，支持腾讯、爱奇艺、优酷、芒果等">
+                placeholder="请输入视频链接，支持腾讯、爱奇艺、哔哩哔哩、抖音等等....">
             <button onclick="parseVideo()">解析播放</button>
         </div>
 
@@ -190,9 +190,11 @@
             <h3>使用说明</h3>
             <p>1. 复制视频网页链接，支持以下平台:</p>
             <ul style="padding-left: 20px; margin-top: 5px; margin-bottom: 10px;">
-                <li>腾讯视频 (v.qq.com)</li>
-                <li>爱奇艺 (iqiyi.com)</li>
-                <li>哔哩哔哩 (bilibili.com)......</li>
+            <li>腾讯视频 (v.qq.com)</li>
+            <li>爱奇艺 (iqiyi.com)</li>
+            <li>哔哩哔哩 (bilibili.com)</li>
+            <li>抖音 (douyin.com)</li>
+            <li>快手 (kuaishou.com)等...</li>
             </ul>
             <p>2. 如果当前线路无法播放，请尝试切换其他线路</p>
             <p>3. 开发作者为Xiaoyu_2009（小宇不是鱼）</p>
@@ -233,7 +235,11 @@
                 'tv.sohu.com',
                 'bilibili.com',
                 '1905.com',
-                'pptv.com'
+                'pptv.com',
+                'douyin.com',
+                'kuaishou.com',
+                'ixigua.com',
+                'haokan.baidu.com'
             ];
             
             let isSupported = false;
@@ -317,10 +323,8 @@
             if (urlParam) {
                 const decodedUrl = decodeURIComponent(urlParam);
                 urlInput.value = decodedUrl;
-
                 const urlParamMatch = decodedUrl.match(/(https?:\/\/[^\s]+)/);
                 const extractedParamUrl = urlParamMatch && urlParamMatch[0] ? urlParamMatch[0] : decodedUrl;
-
                 const currentIndex = document.getElementById('api-select').selectedIndex;
                 const isBiliSelected = currentIndex === 5;
                 
